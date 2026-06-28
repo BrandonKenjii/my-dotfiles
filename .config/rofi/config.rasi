@@ -20,14 +20,14 @@ configuration {
 
 /* Color Palette */
 * {
-    bg:           #2d353be6;
-    bg-alt:       #343f44e6;
-    bg-selected:  #4d5d51e6;
-    fg:           #d3c6aa;
-    fg-alt:       #859289;
-    border:       #a7c080;
-    accent:       #a7c080;
-    urgent:       #e67e80;
+    bg:           #1a1b26e6;
+    bg-alt:       #24283be6;
+    bg-selected:  #364a82e6;
+    fg:           #c0caf5;
+    fg-alt:       #565f89;
+    border:       #89b4fa;
+    accent:       #7aa2f7;
+    urgent:       #f7768e;
     transparent:  transparent;
 
     background-color: @transparent;

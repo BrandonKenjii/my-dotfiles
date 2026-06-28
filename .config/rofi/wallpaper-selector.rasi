@@ -1,13 +1,13 @@
-/* Rofi Wallpaper Selector Theme - with image preview */
+/* Rofi Wallpaper Selector — Tokyo Night — embedded preview */
 
 * {
-    bg:           #2d353be6;
-    bg-alt:       #343f44e6;
-    bg-selected:  #4d5d51e6;
-    fg:           #d3c6aa;
-    fg-alt:       #859289;
-    border:       #a7c080;
-    accent:       #a7c080;
+    bg:           #1a1b26e6;
+    bg-alt:       #24283be6;
+    bg-selected:  #364a82e6;
+    fg:           #c0caf5;
+    fg-alt:       #565f89;
+    border:       #89b4fa;
+    accent:       #7aa2f7;
     transparent:  transparent;
 
     background-color: @transparent;
@@ -15,26 +15,26 @@
 }
 
 window {
-    width: 1000px;
-    height: 600px;
+    width: 1100px;
     border: 2px solid;
     border-color: @border;
-    border-radius: 12px;
+    border-radius: 15px;
     background-color: @bg;
-    transparency: "real";
 }
 
 mainbox {
     background-color: @transparent;
-    children: [imagebox, inputbar-listview];
+    children: [imagebox, right-pane];
     spacing: 0px;
     orientation: horizontal;
 }
 
+/* ---------- left: preview image ---------- */
 imagebox {
     background-color: @bg-alt;
     border: 0px 2px 0px 0px;
     border-color: @border;
+    border-radius: 13px 0px 0px 13px;
     padding: 20px;
     children: [image-dummy];
     expand: true;
@@ -43,10 +43,12 @@ imagebox {
 
 image-dummy {
     background-image: url("/tmp/wallpaper-preview.jpg", width);
-    size: 440px;
+    size: 460px;
+    border-radius: 8px;
 }
 
-inputbar-listview {
+/* ---------- right: input + list ---------- */
+right-pane {
     children: [inputbar, listview];
     spacing: 10px;
     padding: 20px;
@@ -55,7 +57,7 @@ inputbar-listview {
 
 inputbar {
     background-color: @bg-alt;
-    border-radius: 8px;
+    border-radius: 10px;
     padding: 12px 16px;
     spacing: 8px;
     children: [prompt, entry];
@@ -74,7 +76,7 @@ entry {
 listview {
     background-color: @transparent;
     columns: 1;
-    lines: 12;
+    lines: 14;
     spacing: 4px;
     scrollbar: true;
     border: 0px;
@@ -90,17 +92,68 @@ scrollbar {
 
 element {
     background-color: @transparent;
-    text-color: @fg;
     padding: 10px 12px;
     border-radius: 6px;
+    spacing: 10px;
 }
 
-element selected {
+element normal.normal {
+    background-color: @transparent;
+    text-color: @fg;
+}
+
+element normal.urgent {
+    background-color: @urgent;
+    text-color: @bg;
+}
+
+element normal.active {
+    background-color: @bg-alt;
+    text-color: @accent;
+}
+
+element selected.normal {
     background-color: @bg-selected;
     text-color: @fg;
+    border: 0px 0px 0px 3px;
+    border-color: @accent;
+}
+
+element selected.urgent {
+    background-color: @urgent;
+    text-color: @bg;
+}
+
+element selected.active {
+    background-color: @bg-selected;
+    text-color: @accent;
+}
+
+element alternate.normal {
+    background-color: @transparent;
+    text-color: @fg;
+}
+
+element alternate.urgent {
+    background-color: @urgent;
+    text-color: @bg;
+}
+
+element alternate.active {
+    background-color: @transparent;
+    text-color: @accent;
+}
+
+element-icon {
+    size: 24px;
+    background-color: @transparent;
+    cursor: inherit;
 }
 
 element-text {
-    background-color: transparent;
+    background-color: @transparent;
     text-color: inherit;
+    cursor: inherit;
+    vertical-align: 0.5;
+    horizontal-align: 0.0;
 }

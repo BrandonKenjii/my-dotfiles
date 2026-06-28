@@ -1,6 +1,6 @@
 {
+  "//": "AGS v3 — ags binary provided by aylurs-gtk-shell AUR package, gnim for TypeScript GTK bindings",
   "dependencies": {
-    "ags": "*",
     "gnim": "*"
   },
   "prettier": {

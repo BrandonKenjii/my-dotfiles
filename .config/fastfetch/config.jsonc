@@ -3,7 +3,7 @@
 
     "logo": {
         "type": "kitty",
-        "source": "~/Downloads/image-removebg-preview5.png",
+        "source": "~/.config/fastfetch/logo.png",
         "width": 25,
         "height": 15,
         "padding": {

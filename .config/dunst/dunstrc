@@ -4,7 +4,7 @@
     follow = mouse
 
     # Geometry
-    width = (280, 800)
+    width = (280, 400)
     height = 180
     origin = top-right
     offset = 16x16
@@ -18,13 +18,13 @@
     progress_bar_min_width = 200
     progress_bar_max_width = 360
     progress_bar_corner_radius = 4
-    highlight = "#a7c080"
+    highlight = "#7aa2f7"
 
     # Appearance
     transparency = 0
     corner_radius = 12
     frame_width = 2
-    frame_color = "#a7c080"
+    frame_color = "#7aa2f7"
     separator_height = 2
     separator_color = frame
     padding = 14
@@ -44,7 +44,7 @@
     ignore_newline = no
     stack_duplicates = true
     hide_duplicate_count = false
-    show_indicators = no
+    show_indicators = yes
     indicate_hidden = yes
 
     # Icons
@@ -75,53 +75,53 @@
     per_monitor_dpi = false
 
 [urgency_low]
-    background = "#2d353b"
-    foreground = "#d3c6aa"
-    frame_color = "#3d484d"
-    highlight = "#859289"
+    background = "#1a1b26"
+    foreground = "#c0caf5"
+    frame_color = "#292e42"
+    highlight = "#565f89"
     timeout = 5
 
 [urgency_normal]
-    background = "#2d353b"
-    foreground = "#d3c6aa"
-    frame_color = "#a7c080"
-    highlight = "#a7c080"
+    background = "#1a1b26"
+    foreground = "#c0caf5"
+    frame_color = "#7aa2f7"
+    highlight = "#7aa2f7"
     timeout = 10
 
 [urgency_critical]
-    background = "#2d353b"
-    foreground = "#d3c6aa"
-    frame_color = "#e67e80"
-    highlight = "#e67e80"
+    background = "#1a1b26"
+    foreground = "#c0caf5"
+    frame_color = "#f7768e"
+    highlight = "#f7768e"
     timeout = 0
 
 # Volume - purple progress bar, subtle frame
 [volume]
     appname = "volume"
-    background = "#2d353b"
-    foreground = "#d3c6aa"
-    frame_color = "#3d484d"
-    highlight = "#d699b6"
-    format = "<b>%s</b>"
+    background = "#1a1b26"
+    foreground = "#c0caf5"
+    frame_color = "#292e42"
+    highlight = "#bb9af7"
+    format = "<b>%s</b>\n%b"
     timeout = 2
     history_ignore = yes
 
 # Brightness - yellow progress bar, subtle frame
 [brightness]
     appname = "brightness"
-    background = "#2d353b"
-    foreground = "#d3c6aa"
-    frame_color = "#3d484d"
-    highlight = "#dbbc7f"
-    format = "<b>%s</b>"
+    background = "#1a1b26"
+    foreground = "#c0caf5"
+    frame_color = "#292e42"
+    highlight = "#e0af68"
+    format = "<b>%s</b>\n%b"
     timeout = 2
     history_ignore = yes
 
 # Spotify (brand colors - not themed)
 [spotify]
-    appname = Spotify
-    background = "#2d353b"
-    foreground = "#d3c6aa"
+    appname = "Spotify"
+    background = "#1a1b26"
+    foreground = "#c0caf5"
     frame_color = "#1db954"
     highlight = "#1db954"
     format = "<b>Now Playing</b>\n<b>%s</b>\n%b"
@@ -132,28 +132,30 @@
 
 # Discord (brand colors - not themed)
 [discord]
-    appname = Discord
-    background = "#2d353b"
-    foreground = "#d3c6aa"
+    appname = "Discord"
+    background = "#1a1b26"
+    foreground = "#c0caf5"
     frame_color = "#5865f2"
+    highlight = "#5865f2"
     format = "<b>%s</b>\n%b"
     timeout = 8
 
 [discord-dm]
-    appname = Discord
+    appname = "Discord"
     summary = "*Direct Message*"
-    background = "#2d353b"
-    foreground = "#d3c6aa"
+    background = "#1a1b26"
+    foreground = "#c0caf5"
     frame_color = "#eb459e"
+    highlight = "#eb459e"
     format = "<b>%s</b>\n%b"
     timeout = 10
     urgency = normal
 
 [discord-mention]
-    appname = Discord
-    body = "*@*"
-    background = "#2d353b"
-    foreground = "#d3c6aa"
+    appname = "Discord"
+    body = "@"
+    background = "#1a1b26"
+    foreground = "#c0caf5"
     frame_color = "#faa61a"
     format = "<b>%s</b>\n%b"
     timeout = 10

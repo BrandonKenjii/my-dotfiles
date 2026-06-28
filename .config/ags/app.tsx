@@ -14,7 +14,10 @@ function closePopup() {
 
 function openPopup() {
     const popup = app.get_window("media-popup")
-    if (popup) popup.show()
+    if (popup) {
+        popup.show()
+        popup.grab_focus()
+    }
 }
 
 // --- Media helpers ---
@@ -383,12 +386,14 @@ function SystemWidget() {
                     )} />
                     <label class="info-label" label="Battery" hexpand halign={Gtk.Align.START} />
                     <label class="info-value" label={batteryLevel((v: string) => v ? `${v}%` : "")} halign={Gtk.Align.END} />
+                    <label class="info-arrow" label="󰅀" />
                 </box>
 
                 <box class="info-row">
                     <label class="info-icon" label={networkName((v: string) => v ? "󰤨" : "󰤭")} />
                     <label class="info-label" label="Network" hexpand halign={Gtk.Align.START} />
                     <label class="info-value" label={networkName((v: string) => v || "Disconnected")} halign={Gtk.Align.END} />
+                    <label class="info-arrow" label="󰅀" />
                 </box>
 
                 <box class="info-row">
@@ -401,12 +406,14 @@ function SystemWidget() {
                     })} />
                     <label class="info-label" label="Volume" hexpand halign={Gtk.Align.START} />
                     <label class="info-value" label={volumeLevel((v: string) => v === "muted" ? "Muted" : `${v}%`)} halign={Gtk.Align.END} />
+                    <label class="info-arrow" label="󰅀" />
                 </box>
 
                 <box class="info-row">
                     <label class="info-icon" label="󰔟" />
                     <label class="info-label" label="Uptime" hexpand halign={Gtk.Align.START} />
                     <label class="info-value" label={uptime} halign={Gtk.Align.END} />
+                    <label class="info-arrow" label="󰅀" />
                 </box>
             </box>
         </box>
@@ -528,10 +535,11 @@ function ControlPanel() {
             name="media-popup"
             class="control-panel-window"
             visible={false}
-            anchor={TOP | LEFT | RIGHT | BOTTOM}
-            exclusivity={Astal.Exclusivity.IGNORE}
-            keymode={Astal.Keymode.ON_DEMAND}
-            layer={Astal.Layer.OVERLAY}
+            anchor={TOP}
+            exclusivity={Astal.Exclusivity.NORMAL}
+            canFocus={true}
+            keymode={Astal.Keymode.EXCLUSIVE}
+            layer={Astal.Layer.TOP}
             onKeyPressEvent={(self, event: Gdk.EventKey) => {
                 if (event.keyval === Gdk.KEY_Escape) {
                     closePopup()
@@ -543,26 +551,25 @@ function ControlPanel() {
         >
             <eventbox
                 hexpand
-                vexpand
                 onButtonPressEvent={() => {
                     closePopup()
                     return true
                 }}
             >
-                <box vertical hexpand vexpand spacing={24} class="popup-container">
-                    <box hexpand vexpand spacing={24}>
-                        <eventbox onButtonPressEvent={() => true} vexpand>
+                <box vertical hexpand spacing={12} class="popup-container">
+                    <box hexpand spacing={12}>
+                        <eventbox onButtonPressEvent={() => true}>
                             <MediaWidget />
                         </eventbox>
-                        <eventbox onButtonPressEvent={() => true} vexpand>
+                        <eventbox onButtonPressEvent={() => true}>
                             <PerformanceWidget />
                         </eventbox>
-                        <eventbox onButtonPressEvent={() => true} vexpand>
+                        <eventbox onButtonPressEvent={() => true}>
                             <SystemWidget />
                         </eventbox>
                     </box>
-                    <box hexpand vexpand spacing={24}>
-                        <eventbox onButtonPressEvent={() => true} hexpand vexpand>
+                    <box hexpand spacing={12}>
+                        <eventbox onButtonPressEvent={() => true} hexpand>
                             <ProcessesWidget />
                         </eventbox>
                     </box>
@@ -587,6 +594,9 @@ app.start({
                 openPopup()
             }
             res("toggled")
+        } else if (Array.isArray(request) && request[0] === "close") {
+            closePopup()
+            res("closed")
         } else {
             res("unknown command")
         }

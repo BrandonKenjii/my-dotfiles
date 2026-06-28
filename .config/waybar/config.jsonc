@@ -1,7 +1,7 @@
 {
     "layer": "top",
     "position": "top",
-    "height": 42,
+    "height": 44,
     "spacing": 0,
     "reload_style_on_change": true,
 
@@ -18,12 +18,15 @@
         "custom/updates",
         "custom/weather",
         "custom/separator",
+        // "bluetooth"  // no bluetooth controller,
         "backlight",
         "pulseaudio",
         "network",
         "custom/separator",
         "battery",
-        "clock"
+        "power-profiles-daemon",
+        "clock",
+        "tray"
     ],
 
     // Workspaces
@@ -50,7 +53,7 @@
         "all-outputs": true,
         "show-special": true,
         "persistent-workspaces": {
-            "*": 5
+            "*": 10
         }
     },
 
@@ -80,11 +83,11 @@
             "weeks-pos": "right",
             "on-scroll": 1,
             "format": {
-                "months": "<span color='#a7c080'><b>{}</b></span>",
-                "days": "<span color='#d3c6aa'>{}</span>",
-                "weeks": "<span color='#a7c080'>W{}</span>",
-                "weekdays": "<span color='#e69875'>{}</span>",
-                "today": "<span color='#e67e80'><b><u>{}</u></b></span>"
+                "months": "<span color='#7aa2f7'><b>{}</b></span>",
+                "days": "<span color='#c0caf5'>{}</span>",
+                "weeks": "<span color='#9ece6a'>W{}</span>",
+                "weekdays": "<span color='#ff9e64'>{}</span>",
+                "today": "<span color='#f7768e'><b><u>{}</u></b></span>"
             }
         },
         "actions": {
@@ -159,7 +162,7 @@
 
     // Custom separator
     "custom/separator": {
-        "format": "│",
+        "format": "",
         "tooltip": false
     },
 
@@ -203,5 +206,32 @@
         "interval": 1800,
         "on-click": "xdg-open 'https://wttr.in'",
         "tooltip": true
+    },
+
+    // System tray
+    "tray": {
+        "spacing": 8
+    },
+
+    // Power profiles
+    "power-profiles-daemon": {
+        "format": "{icon}",
+        "format-icons": {
+            "default": "󰐅",
+            "performance": "󰓅",
+            "balanced": "󰗑",
+            "power-saver": "󰌪"
+        },
+        "tooltip": true
+    },
+
+    // Bluetooth
+    "bluetooth": {
+        "format": "󰂯",
+        "format-disabled": "",
+        "format-connected": "󰂱 {device_alias}",
+        "format-connected-battery": "󰂱 {device_alias} {device_battery}%",
+        "tooltip-format": "{device_alias} -> {device_address}\n{device_description}\nBattery: {device_battery}%",
+        "on-click": "blueman-manager"
     }
 }

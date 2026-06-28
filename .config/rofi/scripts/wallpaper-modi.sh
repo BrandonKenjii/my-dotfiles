@@ -1,35 +1,28 @@
 #!/bin/bash
-# Rofi wallpaper modi script with live preview
+# Rofi wallpaper modi — live preview via FIFO → imv
+#
+# ROFI_RETV=0 : initial — list entries + seed preview
+# ROFI_RETV=1 : Enter  — apply selection
+# other       : selection changed (hover / arrow) — update preview
 
 WALLPAPER_DIR="$HOME/Pictures/Wallpapers"
-PREVIEW_FILE="/tmp/wallpaper-preview.jpg"
+FIFO="/tmp/wallpaper-select-fifo"
 
-update_preview() {
-    local img="$WALLPAPER_DIR/$1"
-    if [ -f "$img" ]; then
-        # Quick resize for preview
-        convert "$img" -resize 440x400^ -gravity center -extent 440x400 "$PREVIEW_FILE" 2>/dev/null || cp "$img" "$PREVIEW_FILE"
-        # Signal rofi to refresh (if possible)
-        pkill -SIGUSR1 rofi 2>/dev/null
-    fi
-}
+if [[ -z "$ROFI_RETV" ]]; then
+    ROFI_RETV=0
+fi
 
-if [ -z "$@" ]; then
-    # Initial call - list all wallpapers
-    find "$WALLPAPER_DIR" -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" -o -name "*.webp" -o -name "*.gif" \) -printf "%f\n" | sort
-else
-    # Selection made
-    SELECTED="$@"
-    update_preview "$SELECTED"
-    
-    # Return selection to apply
-    coproc {
-        swww img "$WALLPAPER_DIR/$SELECTED" \
-            --transition-type grow \
-            --transition-pos center \
-            --transition-duration 1.5 \
-            --transition-fps 60 \
-            --transition-bezier 0.65,0,0.35,1
-        notify-send "Wallpaper Set" "$SELECTED" -i "$WALLPAPER_DIR/$SELECTED" -t 3000
-    }
+if [[ "$ROFI_RETV" -eq 0 ]]; then
+    # ---------- initial: list wallpapers ----------
+    find "$WALLPAPER_DIR" -type f \
+        \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" -o -name "*.webp" -o -name "*.gif" \) \
+        -printf "%f\n" | sort
+
+elif [[ "$ROFI_RETV" -eq 1 ]]; then
+    # ---------- Enter pressed: return selection ----------
+    [[ -n "$ROFI_INFO" ]] && echo "$ROFI_INFO"
+
+elif [[ -n "$ROFI_INFO" && -p "$FIFO" ]]; then
+    # ---------- selection changed: push to fifo ----------
+    echo "$ROFI_INFO" > "$FIFO" 2>/dev/null
 fi

@@ -15,6 +15,6 @@ PS1='[\u@\h \W]\$ '
 
 # kitten icat ~/Pictures/Wallpapers/chunky.gif
 
-fastfetch
+command -v fastfetch &>/dev/null && fastfetch
 
-eval "$(starship init bash)"
+command -v starship &>/dev/null && eval "$(starship init bash)"

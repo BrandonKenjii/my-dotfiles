@@ -99,6 +99,7 @@ declare -A VARS=(
     [ICON_THEME]="$ICON_THEME"
     [NVIM_THEME]="$NVIM_THEME"
     [WALLPAPER]="$WALLPAPER"
+    [HOME]="$HOME"
 )
 
 # Build the sed command with all replacements

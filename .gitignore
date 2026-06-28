@@ -92,16 +92,9 @@
 !.config/pipewire
 !.config/pipewire/*
 !.config/pipewire/**/*
-!.config/wireplumber
-!.config/wireplumber/*
-!.config/wireplumber/**/*
 !.config/easyeffects
 !.config/easyeffects/*
 !.config/easyeffects/**/*
-
-# Input
-!.config/ibus
-!.config/ibus/*
 
 # File manager
 !.config/Thunar
@@ -111,12 +104,6 @@
 # XFCE4
 !.config/xfce4
 !.config/xfce4/**/*
-
-# Systemd user services
-!.config/systemd/
-!.config/systemd/user
-!.config/systemd/user/*
-!.config/systemd/user/*/*
 
 # User scripts
 !.config/usr-scripts

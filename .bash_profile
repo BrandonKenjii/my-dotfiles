@@ -4,7 +4,7 @@
 
 # Start Hyprland on TTY1
 if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
-    exec start-hyprland
+    exec Hyprland
 fi
 
 if command -v dbus-launch >/dev/null && [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then

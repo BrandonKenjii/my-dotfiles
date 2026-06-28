@@ -12,7 +12,7 @@ Super + E             File Manager
 Super + R             App Launcher (Rofi)
 Super + Z             Zen Browser
 Super + B             VS Code
-Super + .             VS Code (current dir)
+Super + N             Spotify
 Super + D             Discord
 Super + S             Steam
 
@@ -39,8 +39,8 @@ Super + ↓             Focus Down
 Super + 1-0           Switch to Workspace 1-10
 Super + Shift + 1-0   Move Window to Workspace
 Super + Scroll        Cycle Workspaces
-Super + E             Special Workspace
-Super + Shift + E     Move to Special
+Super + G             Special Workspace
+Super + Shift + G     Move to Special
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   MOUSE
