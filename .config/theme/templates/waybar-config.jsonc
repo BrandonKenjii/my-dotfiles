@@ -1,7 +1,7 @@
 {
     "layer": "top",
     "position": "top",
-    "height": 42,
+    "height": 22,
     "spacing": 0,
     "reload_style_on_change": true,
 
@@ -9,7 +9,8 @@
     "modules-left": [
         "hyprland/workspaces",
         "custom/separator",
-        "hyprland/window"
+        "hyprland/window",
+        "custom/separator"
     ],
     "modules-center": [
         "custom/spotify"
@@ -18,12 +19,16 @@
         "custom/updates",
         "custom/weather",
         "custom/separator",
+        "idle_inhibitor",
+        "bluetooth",
+        "custom/separator",
         "backlight",
         "pulseaudio",
         "network",
         "custom/separator",
         "battery",
-        "clock"
+        "clock",
+        "tray"
     ],
 
     // Workspaces
@@ -109,6 +114,42 @@
         "tooltip-format": "{timeTo}\nHealth: {health}%\nPower: {power:.1f}W"
     },
 
+    // CPU
+    "cpu": {
+        "format": "󰻠 {usage}%",
+        "format-alt": "󰻠 {avg_frequency:.1f}GHz",
+        "tooltip-format": "CPU Usage: {usage}%\nLoad: {load:.1f}",
+        "interval": 2,
+        "states": {
+            "high": 80
+        },
+        "on-click-right": "kitty --class floating -e htop"
+    },
+
+    // Memory
+    "memory": {
+        "format": "󰍛 {percentage}%",
+        "format-alt": "󰍛 {used:.1f}G/{total:.1f}G",
+        "tooltip-format": "RAM: {used:.1f}GiB / {total:.1f}GiB ({percentage}%)\nSwap: {swapUsed:.1f}GiB / {swapTotal:.1f}GiB ({swapPercentage}%)",
+        "interval": 2,
+        "states": {
+            "high": 80
+        },
+        "on-click-right": "kitty --class floating -e htop"
+    },
+
+    // Temperature
+    "temperature": {
+        "format": "{icon} {temperatureC}°C",
+        "format-icons": ["", "", "", "", ""],
+        "critical-threshold": 80,
+        "tooltip-format": "Temperature: {temperatureC}°C / {temperatureF}°F",
+        "hwmon-path": [
+            "/sys/class/hwmon/hwmon2/temp1_input",
+            "/sys/class/thermal/thermal_zone0/temp"
+        ]
+    },
+
     // Backlight
     "backlight": {
         "format": "{icon} {percent}%",
@@ -141,6 +182,20 @@
         "on-scroll-down": "~/.config/hypr/scripts/volume.sh down"
     },
 
+    // Bluetooth
+    "bluetooth": {
+        "format": "󰂯",
+        "format-disabled": "󰂲",
+        "format-off": "󰂲",
+        "format-connected": "󰂱 {num_connections}",
+        "format-connected-battery": "󰂱 {device_battery_percentage}%",
+        "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
+        "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+        "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%",
+        "on-click": "blueman-manager"
+    },
+
     // Network
     "network": {
         "format-wifi": "󰤨 {signalStrength}%",
@@ -157,13 +212,47 @@
         "interval": 5
     },
 
+    // System tray
+    "tray": {
+        "icon-size": 16,
+        "spacing": 8,
+        "show-passive-items": true
+    },
+
     // Custom separator
     "custom/separator": {
         "format": "│",
         "tooltip": false
     },
 
-    // Spotify (event-driven via playerctl -F)
+    // Power button
+    "custom/power": {
+        "format": "⏻",
+        "tooltip-format": "Power Menu",
+        "on-click": "wlogout -b 4 -c 0 -r 0 -L 800 -R 800",
+        "on-click-right": "hyprctl dispatch exit"
+    },
+
+    // Media player
+    "custom/media": {
+        "format": "{icon} {text}",
+        "format-icons": {
+            "Playing": "󰐊",
+            "Paused": "󰏤",
+            "Stopped": "󰓛"
+        },
+        "max-length": 40,
+        "escape": true,
+        "return-type": "json",
+        "exec": "playerctl -a metadata --format '{\"text\": \"{{artist}} - {{title}}\", \"tooltip\": \"{{playerName}}: {{artist}} - {{album}} - {{title}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F",
+        "on-click": "playerctl play-pause",
+        "on-click-right": "playerctl next",
+        "on-click-middle": "playerctl previous",
+        "on-scroll-up": "playerctl volume 0.05+",
+        "on-scroll-down": "playerctl volume 0.05-"
+    },
+
+    // Spotify
     "custom/spotify": {
         "format": "{icon} {text}",
         "format-icons": {
@@ -175,6 +264,7 @@
         "max-length": 40,
         "exec": "~/.config/waybar/scripts/spotify_status.sh",
         "exec-if": "pgrep spotify",
+        "interval": 1,
         "on-click": "~/.config/waybar/scripts/ags_media_toggle.sh",
         "on-click-right": "playerctl -p spotify next",
         "on-click-middle": "playerctl -p spotify previous",
@@ -203,5 +293,16 @@
         "interval": 1800,
         "on-click": "xdg-open 'https://wttr.in'",
         "tooltip": true
+    },
+
+    // Idle inhibitor (DND)
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "󰅶",
+            "deactivated": "󰾪"
+        },
+        "tooltip-format-activated": "Idle inhibitor: ON",
+        "tooltip-format-deactivated": "Idle inhibitor: OFF"
     }
 }

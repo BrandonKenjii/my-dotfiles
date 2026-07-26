@@ -14,8 +14,12 @@ configuration {
     bg-selected:  #364a82e6;
     fg:           #c0caf5;
     fg-alt:       #565f89;
-    border:       #89b4fa;
+    border:       #7aa2f7;
     accent:       #7aa2f7;
+    green:        #9ece6a;
+    yellow:       #e0af68;
+    magenta:      #bb9af7;
+    cyan:         #7dcfff;
     transparent:  transparent;
 
     background-color: @transparent;
@@ -103,16 +107,6 @@ element normal.normal {
     text-color: @fg;
 }
 
-element normal.urgent {
-    background-color: @urgent;
-    text-color: @bg;
-}
-
-element normal.active {
-    background-color: @bg-alt;
-    text-color: @accent;
-}
-
 element selected.normal {
     background-color: @bg-selected;
     text-color: @fg;
@@ -120,29 +114,9 @@ element selected.normal {
     border-color: @accent;
 }
 
-element selected.urgent {
-    background-color: @urgent;
-    text-color: @bg;
-}
-
-element selected.active {
-    background-color: @bg-selected;
-    text-color: @accent;
-}
-
 element alternate.normal {
     background-color: @transparent;
     text-color: @fg;
-}
-
-element alternate.urgent {
-    background-color: @urgent;
-    text-color: @bg;
-}
-
-element alternate.active {
-    background-color: @transparent;
-    text-color: @accent;
 }
 
 element-text {

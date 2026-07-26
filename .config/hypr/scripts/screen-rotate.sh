@@ -6,18 +6,24 @@ MONITOR="eDP-1"
 
 # Function to rotate screen without changing scale
 rotate_screen() {
+    # Read current scale from the running compositor so we don't override
+    # the user's configured scale (monitors.conf) with auto-detect.
+    local scale
+    scale=$(hyprctl monitors -j 2>/dev/null | jq -r ".[] | select(.name==\"$MONITOR\") | .scale // empty" 2>/dev/null)
+    scale=${scale:-1.5}
+
     case $1 in
         "normal")
-            hyprctl keyword monitor "$MONITOR,preferred,auto,auto,transform,0"
+            hyprctl keyword monitor "$MONITOR,preferred,auto,$scale,transform,0"
             ;;
         "left-up")
-            hyprctl keyword monitor "$MONITOR,preferred,auto,auto,transform,1"
+            hyprctl keyword monitor "$MONITOR,preferred,auto,$scale,transform,1"
             ;;
         "bottom-up")
-            hyprctl keyword monitor "$MONITOR,preferred,auto,auto,transform,2"
+            hyprctl keyword monitor "$MONITOR,preferred,auto,$scale,transform,2"
             ;;
         "right-up")
-            hyprctl keyword monitor "$MONITOR,preferred,auto,auto,transform,3"
+            hyprctl keyword monitor "$MONITOR,preferred,auto,$scale,transform,3"
             ;;
     esac
 }

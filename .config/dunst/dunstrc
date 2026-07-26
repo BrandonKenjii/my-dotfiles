@@ -102,7 +102,7 @@
     foreground = "#c0caf5"
     frame_color = "#292e42"
     highlight = "#bb9af7"
-    format = "<b>%s</b>\n%b"
+    format = "<b>%s</b>"
     timeout = 2
     history_ignore = yes
 
@@ -113,13 +113,13 @@
     foreground = "#c0caf5"
     frame_color = "#292e42"
     highlight = "#e0af68"
-    format = "<b>%s</b>\n%b"
+    format = "<b>%s</b>"
     timeout = 2
     history_ignore = yes
 
 # Spotify (brand colors - not themed)
 [spotify]
-    appname = "Spotify"
+    appname = Spotify
     background = "#1a1b26"
     foreground = "#c0caf5"
     frame_color = "#1db954"
@@ -132,28 +132,26 @@
 
 # Discord (brand colors - not themed)
 [discord]
-    appname = "Discord"
+    appname = Discord
     background = "#1a1b26"
     foreground = "#c0caf5"
     frame_color = "#5865f2"
-    highlight = "#5865f2"
     format = "<b>%s</b>\n%b"
     timeout = 8
 
 [discord-dm]
-    appname = "Discord"
+    appname = Discord
     summary = "*Direct Message*"
     background = "#1a1b26"
     foreground = "#c0caf5"
     frame_color = "#eb459e"
-    highlight = "#eb459e"
     format = "<b>%s</b>\n%b"
     timeout = 10
     urgency = normal
 
 [discord-mention]
-    appname = "Discord"
-    body = "@"
+    appname = Discord
+    body = "*@*"
     background = "#1a1b26"
     foreground = "#c0caf5"
     frame_color = "#faa61a"

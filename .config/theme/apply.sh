@@ -9,6 +9,9 @@ TEMPLATES_DIR="$THEME_DIR/templates"
 THEMES_DIR="$THEME_DIR/themes"
 CONFIG_DIR="$HOME/.config"
 
+# Ensure local bin is in PATH (for rofi-launched sessions)
+export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
+
 # --- Argument handling ---
 
 if [[ -z "$1" ]]; then
@@ -184,8 +187,23 @@ echo "---"
 echo "Reloading services..."
 
 # Hyprland
-if command -v hyprctl &>/dev/null && [[ -n "$HYPRLAND_INSTANCE_SIGNATURE" ]]; then
-    hyprctl reload &>/dev/null && echo "  Hyprland reloaded"
+if command -v hyprctl &>/dev/null; then
+    # HYPRLAND_INSTANCE_SIGNATURE may not be inherited through rofi; try to find it
+    if [[ -z "$HYPRLAND_INSTANCE_SIGNATURE" ]]; then
+        # Find the running hyprland instance signature from the socket directory
+        HYPRLAND_INSTANCE_SIGNATURE=$(ls "$XDG_RUNTIME_DIR/hypr" 2>/dev/null | head -1)
+        export HYPRLAND_INSTANCE_SIGNATURE
+    fi
+
+    if [[ -n "$HYPRLAND_INSTANCE_SIGNATURE" ]]; then
+        if hyprctl reload 2>&1; then
+            echo "  Hyprland reloaded"
+        else
+            echo "  Hyprland reload had errors (exit code $?)"
+        fi
+    else
+        echo "  Skipped Hyprland reload (could not find Hyprland instance)"
+    fi
 fi
 
 # Kitty (live reload via SIGUSR1)
@@ -221,9 +239,38 @@ fi
 if command -v ags &>/dev/null; then
     ags quit 2>/dev/null
     sleep 0.3
-    ags run &>/dev/null &
+    cd "$CONFIG_DIR/ags" && ags run app.tsx &>/dev/null &
     disown
     echo "  AGS restarted"
+fi
+
+# Wallpaper (pick random from theme directory via swww)
+if command -v swww &>/dev/null; then
+    # Ensure swww-daemon is running (may have died or not started)
+    if ! pgrep -x "swww-daemon" > /dev/null; then
+        swww-daemon &
+        sleep 0.5
+    fi
+
+    if [[ -n "$WALLPAPER" ]]; then
+        # Extract theme subdirectory from WALLPAPER path (e.g. "tokyo-night/file.png" -> "tokyo-night")
+        THEME_WALLPAPER_DIR="$HOME/Pictures/Wallpapers/$(dirname "$WALLPAPER")"
+        if [[ -d "$THEME_WALLPAPER_DIR" ]]; then
+            RANDOM_WALLPAPER=$(find "$THEME_WALLPAPER_DIR" -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" -o -name "*.webp" \) | shuf -n 1)
+            if [[ -n "$RANDOM_WALLPAPER" ]]; then
+                swww img "$RANDOM_WALLPAPER" \
+                    --transition-type grow \
+                    --transition-pos center \
+                    --transition-duration 1 \
+                    --transition-fps 60 && \
+                    echo "  Wallpaper set: $(basename "$RANDOM_WALLPAPER")"
+            else
+                echo "  No wallpapers found in $THEME_WALLPAPER_DIR"
+            fi
+        else
+            echo "  Wallpaper dir not found: $THEME_WALLPAPER_DIR"
+        fi
+    fi
 fi
 
 echo "---"

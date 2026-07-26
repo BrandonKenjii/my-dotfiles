@@ -25,7 +25,7 @@ configuration {
     bg-selected:  #364a82e6;
     fg:           #c0caf5;
     fg-alt:       #565f89;
-    border:       #89b4fa;
+    border:       #7aa2f7;
     accent:       #7aa2f7;
     urgent:       #f7768e;
     transparent:  transparent;

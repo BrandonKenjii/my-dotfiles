@@ -7,7 +7,7 @@ WALLPAPER_DIR="$HOME/Pictures/Wallpapers"
 
 WALLPAPER_LIST=$(find "$WALLPAPER_DIR" -type f \
     \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" -o -name "*.webp" -o -name "*.gif" \) \
-    -printf "%f\n" | sort)
+    -printf "%P\n" | sort)
 
 if [[ -z "$WALLPAPER_LIST" ]]; then
     notify-send "Wallpaper Error" "No wallpapers found in $WALLPAPER_DIR" -u critical
@@ -17,6 +17,12 @@ fi
 SELECTED=$(echo "$WALLPAPER_LIST" | rofi -dmenu -i -p " Wallpaper" -no-custom)
 
 if [[ -n "$SELECTED" ]]; then
+    # Ensure swww-daemon is running
+    if ! pgrep -x "swww-daemon" > /dev/null; then
+        swww-daemon &
+        sleep 0.5
+    fi
+
     swww img "$WALLPAPER_DIR/$SELECTED" \
         --transition-type grow \
         --transition-pos center \
