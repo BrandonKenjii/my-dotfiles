@@ -51,8 +51,8 @@ show_popup() {
     choice=$(echo -e "󰒮 Previous\n$play_icon\n󰒭 Next\n󰓎 Shuffle\n󰑖 Repeat" | rofi -dmenu -p "󰓇 $title - $artist" -kb-cancel "Escape" -click-to-exit -theme-str '
         window {
             width: 300px;
-            background-color: #1a1b26;
-            border-color: #7aa2f7;
+            background-color: #1e1e2e;
+            border-color: #89b4fa;
             border: 2px;
             border-radius: 12px;
         }
@@ -64,13 +64,13 @@ show_popup() {
             padding: 8px 12px;
         }
         element selected {
-            background-color: #364a82;
-            text-color: #1a1b26;
+            background-color: #45475a;
+            text-color: #1e1e2e;
         }
         inputbar {
             padding: 8px 12px;
-            background-color: #292e42;
-            text-color: #7aa2f7;
+            background-color: #313244;
+            text-color: #89b4fa;
         }
     ')
 

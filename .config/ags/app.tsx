@@ -193,8 +193,27 @@ const artist = createPoll("", 1000, () => getPlayerctl("artist"))
 const album = createPoll("", 1000, () => getPlayerctl("album"))
 const artUrl = createPoll("", 2000, () => getArtUrl())
 const status = createPoll("Stopped", 1000, () => getStatus())
-const position = createPoll(0, 1000, () => getPosition())
+// Spotify's MPRIS Position property freezes while playing (it's only reported
+// on state changes), so extrapolate the elapsed time between polls ourselves.
+let lastRawPos = 0
+let lastRawPosAt = 0
+
+const position = createPoll(0, 1000, () => {
+    const raw = getPosition()
+    const now = Date.now() / 1000
+    if (raw !== lastRawPos || lastRawPosAt === 0) {
+        lastRawPos = raw
+        lastRawPosAt = now
+        return raw
+    }
+    return status.peek() === "Playing" ? lastRawPos + (now - lastRawPosAt) : lastRawPos
+})
 const duration = createPoll(0, 1000, () => getDuration())
+
+// drag guards: while a slider is being dragged, ignore its poll so the knob
+// isn't yanked back, and write the new value only once on release
+let progressDrag: number | null = null
+let volumeDrag: number | null = null
 
 const date = createPoll("", 60000, "date '+%A, %B %d'")
 const time = createPoll("", 1000, "date '+%H:%M'")
@@ -220,7 +239,15 @@ function MediaWidget() {
         <box vertical class="tile" hexpand vexpand>
             <box class="widget-header">
                 <label class="widget-header-icon media" label="󰎈" />
-                <label class="widget-header-title" label="Now Playing" />
+                <label class="widget-header-title" label="Now Playing" hexpand halign={Gtk.Align.START} />
+                <label
+                    class={status((s: string) =>
+                        `status-chip ${s === "Playing" ? "playing" : s === "Paused" ? "paused" : "stopped"}`
+                    )}
+                    label={status((s: string) =>
+                        s === "Playing" ? "PLAYING" : s === "Paused" ? "PAUSED" : "STOPPED"
+                    )}
+                />
             </box>
 
             <box class="media-info">
@@ -260,14 +287,22 @@ function MediaWidget() {
                 <slider
                     class="progress-slider"
                     value={position((pos: number) => {
-                        const dur = duration.get()
+                        if (progressDrag !== null) return progressDrag
+                        // note: duration() in call form is a tracked dependency, so
+                        // this re-evaluates when the duration first arrives too
+                        const dur = duration()
                         return dur > 0 ? pos / dur : 0
                     })}
                     onDragged={(self) => {
+                        progressDrag = self.value
+                    }}
+                    onButtonReleaseEvent={() => {
+                        if (progressDrag === null) return
                         const dur = duration.get()
                         if (dur > 0) {
-                            execAsync(["playerctl", "-p", "spotify", "position", String(self.value * dur)])
+                            execAsync(["playerctl", "-p", "spotify", "position", String(progressDrag * dur)])
                         }
+                        progressDrag = null
                     }}
                 />
                 <box class="time-labels">
@@ -276,9 +311,30 @@ function MediaWidget() {
                 </box>
             </box>
 
-            <box class="player-source" halign={Gtk.Align.CENTER}>
-                <label class="source-icon" label="" />
-                <label class="source-name" label="Spotify" />
+            <box class="volume-row">
+                <label class="volume-icon" label={volumeLevel((v: string) => {
+                    if (v === "muted") return "󰝟"
+                    const n = parseInt(v)
+                    if (n > 66) return "󰕾"
+                    if (n > 33) return "󰖀"
+                    return "󰕿"
+                })} />
+                <slider
+                    class="progress-slider volume-slider"
+                    hexpand
+                    value={volumeLevel((v: string) => {
+                        if (volumeDrag !== null) return volumeDrag
+                        return v === "muted" ? 0 : parseInt(v) / 100
+                    })}
+                    onDragged={(self) => {
+                        volumeDrag = self.value
+                    }}
+                    onButtonReleaseEvent={() => {
+                        if (volumeDrag === null) return
+                        execAsync(["bash", "-c", `wpctl set-volume @DEFAULT_AUDIO_SINK@ ${volumeDrag}`])
+                        volumeDrag = null
+                    }}
+                />
             </box>
         </box>
     )
@@ -300,7 +356,7 @@ function PerformanceWidget() {
                         <label class="metric-value" label={cpuUsage} />
                     </box>
                     <box class="metric-bar">
-                        <box class="metric-fill cpu" css={cpuUsage((v: string) => `min-width: ${parseInt(v) * 2.5}px;`)} />
+                        <box class="metric-fill cpu" css={cpuUsage((v: string) => `min-width: ${Math.min(parseInt(v) * 1.4, 140)}px;`)} />
                     </box>
                 </box>
 
@@ -311,7 +367,7 @@ function PerformanceWidget() {
                         <label class="metric-value" label={memUsage} />
                     </box>
                     <box class="metric-bar">
-                        <box class="metric-fill mem" css={memUsage((v: string) => `min-width: ${parseInt(v) * 2.5}px;`)} />
+                        <box class="metric-fill mem" css={memUsage((v: string) => `min-width: ${Math.min(parseInt(v) * 1.4, 140)}px;`)} />
                     </box>
                 </box>
 
@@ -322,7 +378,7 @@ function PerformanceWidget() {
                         <label class="metric-value" label={diskUsage} />
                     </box>
                     <box class="metric-bar">
-                        <box class="metric-fill disk" css={diskUsage((v: string) => `min-width: ${parseInt(v) * 2.5}px;`)} />
+                        <box class="metric-fill disk" css={diskUsage((v: string) => `min-width: ${Math.min(parseInt(v) * 1.4, 140)}px;`)} />
                     </box>
                 </box>
 
@@ -475,7 +531,7 @@ function TerminalWidget() {
                 </box>
                 <box class="term-info-row">
                     <label class="term-info-key" label="Theme" halign={Gtk.Align.START} />
-                    <label class="term-info-value" label="Tokyo Night" halign={Gtk.Align.START} />
+                    <label class="term-info-value" label="Catppuccin Mocha" halign={Gtk.Align.START} />
                 </box>
             </box>
         </box>
@@ -541,7 +597,11 @@ function ControlPanel() {
             keymode={Astal.Keymode.EXCLUSIVE}
             layer={Astal.Layer.TOP}
             onKeyPressEvent={(self, event: Gdk.EventKey) => {
-                if (event.keyval === Gdk.KEY_Escape) {
+                // NOTE: at runtime gnim delivers the Gdk.Event *union* here
+                // (its `.keyval` field is undefined), so the keyval must be
+                // read through the union accessor: get_keyval() -> [ok, keyval]
+                const [ok, keyval] = (event as unknown as Gdk.Event).get_keyval()
+                if (ok && keyval === Gdk.KEY_Escape) {
                     closePopup()
                     return true
                 }
@@ -557,20 +617,34 @@ function ControlPanel() {
                 }}
             >
                 <box vertical hexpand spacing={12} class="popup-container">
+                    <box class="popup-header" hexpand>
+                        <label class="popup-title-icon" label="󰓇" />
+                        <label class="popup-title" label="Spotify" hexpand halign={Gtk.Align.START} />
+                        <box class="esc-hint">
+                            <label class="esc-hint-key" label="ESC" />
+                            <label class="esc-hint-text" label="to close" />
+                        </box>
+                        <button class="close-btn" onClicked={() => closePopup()}>
+                            <label label="󰅖" />
+                        </button>
+                    </box>
                     <box hexpand spacing={12}>
-                        <eventbox onButtonPressEvent={() => true}>
+                        <eventbox onButtonPressEvent={() => true} hexpand>
                             <MediaWidget />
                         </eventbox>
-                        <eventbox onButtonPressEvent={() => true}>
+                        <eventbox onButtonPressEvent={() => true} hexpand>
                             <PerformanceWidget />
                         </eventbox>
-                        <eventbox onButtonPressEvent={() => true}>
+                        <eventbox onButtonPressEvent={() => true} hexpand>
                             <SystemWidget />
                         </eventbox>
                     </box>
                     <box hexpand spacing={12}>
                         <eventbox onButtonPressEvent={() => true} hexpand>
                             <ProcessesWidget />
+                        </eventbox>
+                        <eventbox onButtonPressEvent={() => true} hexpand>
+                            <TerminalWidget />
                         </eventbox>
                     </box>
                 </box>

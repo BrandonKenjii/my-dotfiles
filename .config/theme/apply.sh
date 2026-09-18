@@ -155,6 +155,8 @@ apply_template "$TEMPLATES_DIR/ags-style.scss"           "$CONFIG_DIR/ags/style.
 apply_template "$TEMPLATES_DIR/waybar-style.css"         "$CONFIG_DIR/waybar/style.css"
 apply_template "$TEMPLATES_DIR/waybar-config.jsonc"      "$CONFIG_DIR/waybar/config.jsonc"
 apply_template "$TEMPLATES_DIR/waybar-spotify-popup.sh"  "$CONFIG_DIR/waybar/scripts/spotify_popup.sh"
+apply_template "$TEMPLATES_DIR/swaync-config.json"       "$CONFIG_DIR/swaync/config.json"
+apply_template "$TEMPLATES_DIR/swaync-style.css"         "$CONFIG_DIR/swaync/style.css"
 apply_template "$TEMPLATES_DIR/dunstrc"                  "$CONFIG_DIR/dunst/dunstrc"
 apply_template "$TEMPLATES_DIR/rofi-config.rasi"         "$CONFIG_DIR/rofi/config.rasi"
 apply_template "$TEMPLATES_DIR/rofi-keybinds.rasi"       "$CONFIG_DIR/rofi/keybinds.rasi"
@@ -227,6 +229,12 @@ if pgrep -x dunst &>/dev/null; then
     dunst &>/dev/null &
     disown
     echo "  Dunst restarted"
+fi
+
+# SwayNC
+if pgrep -x swaync &>/dev/null; then
+    swaync-client -R -sw 2>/dev/null
+    swaync-client -rs 2>/dev/null && echo "  SwayNC reloaded"
 fi
 
 # Spicetify

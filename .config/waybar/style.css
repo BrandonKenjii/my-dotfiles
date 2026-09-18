@@ -10,7 +10,7 @@
 
 window#waybar {
     background: transparent;
-    color: #c0caf5;
+    color: #cdd6f4;
 }
 
 window#waybar.hidden {
@@ -19,21 +19,21 @@ window#waybar.hidden {
 
 #waybar > box {
     margin: 4px 8px 0 8px;
-    background: #1a1b26;
+    background: #1e1e2e;
     border-radius: 16px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    border: 1px solid #292e42;
+    border: 1px solid #313244;
 }
 
 /* Tooltip styling */
 tooltip {
-    background: #1a1b26;
-    border: 1px solid #7aa2f7;
+    background: #1e1e2e;
+    border: 1px solid #89b4fa;
     border-radius: 12px;
 }
 
 tooltip label {
-    color: #c0caf5;
+    color: #cdd6f4;
     padding: 4px 8px;
 }
 
@@ -41,7 +41,7 @@ tooltip label {
 #workspaces {
     margin: 2px 4px;
     padding: 0 2px;
-    background: #24283b;
+    background: #313244;
     border-radius: 10px;
 }
 
@@ -50,34 +50,34 @@ tooltip label {
     margin: 2px 1px;
     min-width: 18px;
     min-height: 18px;
-    color: #565f89;
+    color: #6c7086;
     background: transparent;
     border-radius: 50%;
     transition: all 0.3s ease;
 }
 
 #workspaces button:hover {
-    background: #364a82;
-    color: #c0caf5;
+    background: #45475a;
+    color: #cdd6f4;
 }
 
 #workspaces button.active {
-    background: linear-gradient(135deg, #7aa2f7 0%, #bb9af7 100%);
-    color: #1a1b26;
+    background: linear-gradient(135deg, #89b4fa 0%, #cba6f7 100%);
+    color: #1e1e2e;
     font-weight: bold;
     box-shadow: 0 2px 8px rgba(122, 162, 247, 0.4);
 }
 
 #workspaces button.urgent {
-    background: #f7768e;
-    color: #1a1b26;
+    background: #f38ba8;
+    color: #1e1e2e;
 }
 
 /* Window title */
 #window {
     margin: 2px 8px;
     padding: 2px 8px;
-    color: #7dcfff;
+    color: #74c7ec;
     font-weight: 500;
 }
 
@@ -101,12 +101,15 @@ tooltip label {
 #custom-media,
 #custom-weather,
 #custom-updates,
+#custom-fortivpn,
+#custom-docker,
+#custom-notification,
 #tray,
 #idle_inhibitor,
 #language {
     padding: 2px 10px;
     margin: 2px 1px;
-    background: #24283b;
+    background: #313244;
     border-radius: 8px;
     transition: all 0.3s ease;
 }
@@ -126,115 +129,118 @@ tooltip label {
 #custom-media:hover,
 #custom-weather:hover,
 #custom-updates:hover,
+#custom-fortivpn:hover,
+#custom-docker:hover,
+#custom-notification:hover,
 #idle_inhibitor:hover,
 #language:hover {
-    background: #364a82;
+    background: #45475a;
 }
 
 /* Clock with calendar */
 #clock {
-    color: #bb9af7;
+    color: #cba6f7;
     font-weight: bold;
-    background: linear-gradient(135deg, #24283b 0%, #292e42 100%);
+    background: linear-gradient(135deg, #313244 0%, #313244 100%);
 }
 
 #clock.calendar {
-    background: #1a1b26;
+    background: #1e1e2e;
     padding: 8px;
     border-radius: 12px;
 }
 
 /* Battery */
 #battery {
-    color: #9ece6a;
+    color: #a6e3a1;
 }
 
 #battery.charging {
-    color: #e0af68;
+    color: #f9e2af;
 }
 
 #battery.warning:not(.charging) {
-    color: #e0af68;
+    color: #f9e2af;
 }
 
 #battery.critical:not(.charging) {
-    color: #f7768e;
+    color: #f38ba8;
 }
 
 /* CPU */
 #cpu {
-    color: #7dcfff;
+    color: #74c7ec;
 }
 
 #cpu.high {
-    color: #f7768e;
+    color: #f38ba8;
 }
 
 /* Memory */
 #memory {
-    color: #bb9af7;
+    color: #cba6f7;
 }
 
 #memory.high {
-    color: #f7768e;
+    color: #f38ba8;
 }
 
 /* Disk */
 #disk {
-    color: #ff9e64;
+    color: #fab387;
 }
 
 /* Temperature */
 #temperature {
-    color: #9ece6a;
+    color: #a6e3a1;
 }
 
 #temperature.critical {
-    color: #f7768e;
+    color: #f38ba8;
 }
 
 /* Backlight */
 #backlight {
-    color: #e0af68;
+    color: #f9e2af;
 }
 
 /* Network */
 #network {
-    color: #7aa2f7;
+    color: #89b4fa;
 }
 
 #network.disconnected,
 #network.disabled {
-    color: #565f89;
+    color: #6c7086;
 }
 
 #network.ethernet {
-    color: #9ece6a;
+    color: #a6e3a1;
 }
 
 /* Audio */
 #pulseaudio,
 #wireplumber {
-    color: #7dcfff;
+    color: #74c7ec;
 }
 
 #pulseaudio.muted,
 #wireplumber.muted {
-    color: #565f89;
+    color: #6c7086;
 }
 
 /* Bluetooth */
 #bluetooth {
-    color: #7aa2f7;
+    color: #89b4fa;
 }
 
 #bluetooth.disabled,
 #bluetooth.off {
-    color: #565f89;
+    color: #6c7086;
 }
 
 #bluetooth.connected {
-    color: #9ece6a;
+    color: #a6e3a1;
 }
 
 /* Tray */
@@ -251,8 +257,8 @@ tooltip label {
 }
 
 #tray menu {
-    background: #1a1b26;
-    border: 1px solid #7aa2f7;
+    background: #1e1e2e;
+    border: 1px solid #89b4fa;
     border-radius: 12px;
     padding: 8px;
 }
@@ -263,63 +269,63 @@ tooltip label {
 }
 
 #tray menu menuitem:hover {
-    background: #364a82;
+    background: #45475a;
 }
 
 /* Custom Power Button */
 #custom-power {
-    color: #f7768e;
+    color: #f38ba8;
     font-size: 12px;
     padding: 2px 10px;
     margin-right: 4px;
 }
 
 #custom-power:hover {
-    background: #f7768e;
-    color: #1a1b26;
+    background: #f38ba8;
+    color: #1e1e2e;
 }
 
 /* Custom Media */
 #custom-media {
-    color: #9ece6a;
+    color: #a6e3a1;
 }
 
 #custom-media.playing {
-    color: #7aa2f7;
+    color: #89b4fa;
 }
 
 #custom-media.paused {
-    color: #565f89;
+    color: #6c7086;
 }
 
 /* Custom Updates */
 #custom-updates {
-    color: #e0af68;
+    color: #f9e2af;
 }
 
 #custom-updates.updated {
-    color: #9ece6a;
+    color: #a6e3a1;
 }
 
 /* Custom Weather */
 #custom-weather {
-    color: #7dcfff;
+    color: #74c7ec;
 }
 
 /* Idle Inhibitor */
 #idle_inhibitor {
-    color: #565f89;
+    color: #6c7086;
 }
 
 #idle_inhibitor.activated {
-    color: #e0af68;
+    color: #f9e2af;
 }
 
 /* Language */
 #language {
     padding: 2px 10px;
     margin: 2px 1px;
-    background: #24283b;
+    background: #313244;
     border-radius: 8px;
     transition: all 0.3s ease;
 }
@@ -335,7 +341,7 @@ tooltip label {
 
 /* Separator between module groups */
 #custom-separator {
-    color: #292e42;
+    color: #313244;
     font-size: 14px;
     padding: 0 2px;
 }
@@ -355,7 +361,7 @@ tooltip label {
 }
 
 #custom-spotify:hover {
-    background: linear-gradient(135deg, #1ed760 0%, #1a1b26 100%);
+    background: linear-gradient(135deg, #1ed760 0%, #1e1e2e 100%);
     border-color: #1ed760;
     box-shadow: 0 0 10px rgba(29, 185, 84, 0.5);
 }
@@ -367,15 +373,15 @@ tooltip label {
 }
 
 #custom-spotify.Paused {
-    background: linear-gradient(135deg, #292e42 0%, #1a1b26 100%);
+    background: linear-gradient(135deg, #313244 0%, #1e1e2e 100%);
     color: #888888;
-    border-color: #565f89;
+    border-color: #6c7086;
 }
 
 #custom-spotify.stopped {
-    background: #1a1b26;
-    color: #565f89;
-    border-color: #292e42;
+    background: #1e1e2e;
+    color: #6c7086;
+    border-color: #313244;
 }
 
 /* Media control buttons - circular hover */
@@ -399,7 +405,7 @@ tooltip label {
 
 /* Notification styling */
 .notification {
-    background: #1a1b26;
+    background: #1e1e2e;
     color: #e9e9ed;
     border: 2px solid #27a1b9;
     border-radius: 12px;
@@ -407,9 +413,44 @@ tooltip label {
     box-shadow: 0 4px 24px 0 rgba(0,0,0,0.4);
 }
 .notification .summary {
-    color: #7aa2f7;
+    color: #89b4fa;
     font-weight: bold;
 }
 .notification .body {
     color: #e9e9ed;
+}
+
+/* FortiClient VPN */
+#custom-fortivpn.connected {
+    color: #a6e3a1;
+}
+
+#custom-fortivpn.disconnected {
+    color: #6c7086;
+}
+
+/* Docker */
+#custom-docker.running {
+    color: #a6e3a1;
+}
+
+#custom-docker.stopped {
+    color: #6c7086;
+}
+
+/* Notification center (swaync) */
+#custom-notification {
+    color: #a6e3a1;
+}
+
+#custom-notification.dnd-notification,
+#custom-notification.dnd-none,
+#custom-notification.dnd-inhibited-notification,
+#custom-notification.dnd-inhibited-none {
+    color: #f9e2af;
+}
+
+#custom-notification.inhibited-notification,
+#custom-notification.inhibited-none {
+    color: #f38ba8;
 }

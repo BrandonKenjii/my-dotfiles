@@ -63,8 +63,9 @@ while true; do
             fi
         fi
         
-        # Send notification
-        dunstify -a "Spotify" \
+        # Send notification (lowercase "spotify" to match [spotify-script] rule
+        # directly, avoiding the [spotify] rule's script hook to prevent double notifications)
+        dunstify -a "spotify" \
             -u normal \
             -h string:x-dunst-stack-tag:spotify \
             $icon_arg \

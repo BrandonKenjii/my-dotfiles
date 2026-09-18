@@ -25,10 +25,13 @@
         "backlight",
         "pulseaudio",
         "network",
+        "custom/fortivpn",
+        "custom/docker",
         "custom/separator",
         "battery",
         "clock",
-        "tray"
+        "tray",
+        "custom/notification"
     ],
 
     // Workspaces
@@ -295,6 +298,27 @@
         "tooltip": true
     },
 
+    // FortiClient VPN status
+    "custom/fortivpn": {
+        "format": "{}",
+        "return-type": "json",
+        "exec": "~/.config/waybar/scripts/fortivpn.sh",
+        "interval": 10,
+        "on-click": "~/.config/waybar/scripts/fortivpn.sh toggle",
+        "tooltip": true
+    },
+
+    // Docker status
+    "custom/docker": {
+        "format": "{}",
+        "return-type": "json",
+        "exec": "~/.config/waybar/scripts/docker.sh",
+        "interval": 30,
+        "on-click": "~/.config/waybar/scripts/docker.sh toggle",
+        "on-click-right": "kitty --class floating -e docker ps -a",
+        "tooltip": true
+    },
+
     // Idle inhibitor (DND)
     "idle_inhibitor": {
         "format": "{icon}",
@@ -304,5 +328,29 @@
         },
         "tooltip-format-activated": "Idle inhibitor: ON",
         "tooltip-format-deactivated": "Idle inhibitor: OFF"
+    },
+
+    // Notification center (swaync)
+    "custom/notification": {
+        "tooltip": false,
+        "format": "{icon}",
+        "format-icons": {
+            // JetBrainsMono Nerd Font v3 bells (md-bell*) so metrics match the rest of the bar
+            "notification": "<span foreground='@RED@'>󰏱</span>",
+            "none": "󰏳",
+            "dnd-notification": "<span foreground='@YELLOW@'>󰏲</span>",
+            "dnd-none": "󰯨",
+            "inhibited-notification": "<span foreground='@RED@'>󰏱</span>",
+            "inhibited-none": "󰏳",
+            "dnd-inhibited-notification": "<span foreground='@YELLOW@'>󰏲</span>",
+            "dnd-inhibited-none": "󰯨"
+        },
+        "return-type": "json",
+        "exec-if": "which swaync-client",
+        "exec": "swaync-client -swb",
+        "on-click": "swaync-client -t -sw",
+        "on-click-right": "swaync-client -d -sw",
+        "on-click-middle": "swaync-client -C -sw",
+        "escape": true
     }
 }

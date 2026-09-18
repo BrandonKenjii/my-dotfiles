@@ -9,17 +9,17 @@ configuration {
 
 /* Color Palette */
 * {
-    bg:           #1a1b26e6;
-    bg-alt:       #24283be6;
-    bg-selected:  #364a82e6;
-    fg:           #c0caf5;
-    fg-alt:       #565f89;
-    border:       #7aa2f7;
-    accent:       #7aa2f7;
-    green:        #9ece6a;
-    yellow:       #e0af68;
-    magenta:      #bb9af7;
-    cyan:         #7dcfff;
+    bg:           #1e1e2ee6;
+    bg-alt:       #313244e6;
+    bg-selected:  #45475ae6;
+    fg:           #cdd6f4;
+    fg-alt:       #6c7086;
+    border:       #89b4fa;
+    accent:       #89b4fa;
+    green:        #a6e3a1;
+    yellow:       #f9e2af;
+    magenta:      #cba6f7;
+    cyan:         #74c7ec;
     transparent:  transparent;
 
     background-color: @transparent;

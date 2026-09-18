@@ -101,6 +101,9 @@ tooltip label {
 #custom-media,
 #custom-weather,
 #custom-updates,
+#custom-fortivpn,
+#custom-docker,
+#custom-notification,
 #tray,
 #idle_inhibitor,
 #language {
@@ -126,6 +129,9 @@ tooltip label {
 #custom-media:hover,
 #custom-weather:hover,
 #custom-updates:hover,
+#custom-fortivpn:hover,
+#custom-docker:hover,
+#custom-notification:hover,
 #idle_inhibitor:hover,
 #language:hover {
     background: @BG_SELECTED@;
@@ -412,4 +418,39 @@ tooltip label {
 }
 .notification .body {
     color: #e9e9ed;
+}
+
+/* FortiClient VPN */
+#custom-fortivpn.connected {
+    color: @GREEN@;
+}
+
+#custom-fortivpn.disconnected {
+    color: @FG_DARK@;
+}
+
+/* Docker */
+#custom-docker.running {
+    color: @GREEN@;
+}
+
+#custom-docker.stopped {
+    color: @FG_DARK@;
+}
+
+/* Notification center (swaync) */
+#custom-notification {
+    color: @GREEN@;
+}
+
+#custom-notification.dnd-notification,
+#custom-notification.dnd-none,
+#custom-notification.dnd-inhibited-notification,
+#custom-notification.dnd-inhibited-none {
+    color: @YELLOW@;
+}
+
+#custom-notification.inhibited-notification,
+#custom-notification.inhibited-none {
+    color: @RED@;
 }

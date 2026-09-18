@@ -11,7 +11,9 @@ $green: @GREEN@;
 $magenta: @MAGENTA@;
 $red: @RED@;
 $yellow: @YELLOW@;
+$bg-selected: @BG_SELECTED@;
 $spotify-green: #1db954;
+$spotify-green-bright: #1ed760;
 
 * {
     font-family: "JetBrainsMono Nerd Font", monospace;
@@ -22,11 +24,71 @@ $spotify-green: #1db954;
 // =========================
 
 .control-panel-window {
-    background-color: rgba(0, 0, 0, 0.4);
+    // translucent theme-tinted backdrop (rofi-style) instead of a plain black dim
+    background-color: rgba(30, 30, 46, 0.9);
 }
 
 .popup-container {
-    padding: 24px;
+    padding: 20px;
+}
+
+// =========================
+// Popup Header
+// =========================
+
+.popup-header {
+    background-color: $bg;
+    border-radius: 16px;
+    border: 1px solid $bg-highlight;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    padding: 10px 16px;
+    margin-bottom: 12px;
+}
+
+.popup-title-icon {
+    font-size: 15px;
+    color: $spotify-green;
+    margin-right: 8px;
+}
+
+.popup-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: $fg;
+}
+
+.esc-hint {
+    background-color: $bg-dark;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    padding: 3px 10px;
+    margin-right: 8px;
+}
+
+.esc-hint-key {
+    font-size: 10px;
+    font-weight: 700;
+    color: $fg;
+}
+
+.esc-hint-text {
+    font-size: 10px;
+    color: $fg-dark;
+    margin-left: 4px;
+}
+
+.close-btn {
+    all: unset;
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-size: 14px;
+    color: $fg-dark;
+    transition: background-color 200ms ease, color 200ms ease;
+
+    &:hover {
+        background-color: rgba(243, 139, 168, 0.15);
+        color: $red;
+    }
 }
 
 // =========================
@@ -36,7 +98,7 @@ $spotify-green: #1db954;
 .tile {
     background-color: $bg;
     border-radius: 16px;
-    border: 1px solid rgba(122, 162, 247, 0.1);
+    border: 1px solid $bg-highlight;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
     padding: 18px;
 }
@@ -69,6 +131,36 @@ $spotify-green: #1db954;
 }
 
 // =========================
+// Status Chip (media header)
+// =========================
+
+.status-chip {
+    border-radius: 100px;
+    padding: 3px 10px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+
+    &.playing {
+        background-color: rgba(29, 185, 84, 0.12);
+        color: $spotify-green;
+        border: 1px solid rgba(29, 185, 84, 0.25);
+    }
+
+    &.paused {
+        background-color: rgba(249, 226, 175, 0.1);
+        color: $yellow;
+        border: 1px solid rgba(249, 226, 175, 0.2);
+    }
+
+    &.stopped {
+        background-color: rgba(255, 255, 255, 0.04);
+        color: $fg-dark;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+}
+
+// =========================
 // Media Tile
 // =========================
 
@@ -77,19 +169,18 @@ $spotify-green: #1db954;
 }
 
 .album-art {
-    min-width: 88px;
-    min-height: 88px;
-    border-radius: 10px;
+    min-width: 112px;
+    min-height: 112px;
+    border-radius: 12px;
     background-color: $bg-dark;
     background-size: cover;
     background-position: center;
     margin-right: 14px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 .track-info {
-    min-width: 140px;
+    min-width: 100px;
 }
 
 .track-title {
@@ -126,28 +217,29 @@ $spotify-green: #1db954;
     min-height: 20px;
 
     &:hover {
-        background-color: rgba(255, 255, 255, 0.08);
-        color: $blue;
+        background-color: rgba(29, 185, 84, 0.12);
+        color: $spotify-green;
     }
 
     &.play-pause {
-        background-color: $fg;
-        color: $bg;
+        background-color: $spotify-green;
+        color: $bg-dark;
         padding: 12px;
         margin: 0 14px;
         min-width: 24px;
         min-height: 24px;
         font-size: 22px;
+        box-shadow: 0 4px 14px rgba(29, 185, 84, 0.35);
 
         &:hover {
-            background-color: $blue;
+            background-color: $spotify-green-bright;
             color: $bg-dark;
         }
     }
 }
 
 .progress-section {
-    margin-bottom: 12px;
+    margin-bottom: 8px;
 }
 
 .progress-slider {
@@ -157,20 +249,46 @@ $spotify-green: #1db954;
         min-height: 4px;
         border-radius: 2px;
         background-color: $bg-highlight;
+        // the active GTK theme (Breeze) paints gradient background-images
+        // over scale nodes — clear them so our colors show
+        background-image: none;
     }
 
     highlight {
         background-color: $spotify-green;
         border-radius: 2px;
+        background-image: none;
+        border: none;
     }
 
     slider {
+        // note: GTK3 sizes scale knobs from the active theme (Breeze's 16px
+        // here) — min-width on this node does not resize it, and
+        // -GtkScale-slider-length is deprecated, so just style the surface
         min-width: 10px;
         min-height: 10px;
         border-radius: 100px;
         background-color: $fg;
+        border: none;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
     }
+
+    slider:hover {
+        background-color: $spotify-green;
+    }
+}
+
+// Volume row (media tile)
+
+.volume-row {
+    margin-top: 6px;
+}
+
+.volume-icon {
+    font-size: 12px;
+    color: $fg-dark;
+    margin-right: 10px;
+    min-width: 16px;
 }
 
 .time-labels {
@@ -179,22 +297,6 @@ $spotify-green: #1db954;
 
 .time-label {
     font-size: 10px;
-    color: $fg-dark;
-}
-
-.player-source {
-    padding-top: 10px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.source-icon {
-    font-size: 13px;
-    color: $spotify-green;
-    margin-right: 6px;
-}
-
-.source-name {
-    font-size: 11px;
     color: $fg-dark;
 }
 
@@ -233,11 +335,12 @@ $spotify-green: #1db954;
 .metric-value {
     font-size: 13px;
     font-weight: 700;
-    color: $fg-dark;
+    color: $fg;
 }
 
 .metric-bar {
     min-height: 6px;
+    min-width: 140px;
     border-radius: 3px;
     background-color: $bg-dark;
 }
@@ -296,7 +399,7 @@ $spotify-green: #1db954;
     min-width: 34px;
     min-height: 34px;
     border-radius: 8px;
-    background-color: $bg-dark;
+    background-color: $bg-highlight;
     margin: 3px;
     font-size: 12px;
     font-weight: 600;
@@ -304,14 +407,14 @@ $spotify-green: #1db954;
     transition: all 200ms ease;
 
     &:hover {
-        background-color: rgba(122, 162, 247, 0.15);
+        background-color: $bg-selected;
         color: $fg;
     }
 
     &.active {
-        background-color: $blue;
+        background-image: linear-gradient(135deg, $blue 0%, $magenta 100%);
         color: $bg-dark;
-        box-shadow: 0 2px 6px rgba(122, 162, 247, 0.3);
+        box-shadow: 0 2px 6px rgba(137, 180, 250, 0.35);
     }
 }
 
@@ -434,7 +537,13 @@ $spotify-green: #1db954;
 }
 
 .proc-row {
-    padding: 3px 0;
+    padding: 3px 6px;
+    border-radius: 6px;
+    transition: background-color 150ms ease;
+
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.03);
+    }
 }
 
 .proc-name {
@@ -454,14 +563,4 @@ $spotify-green: #1db954;
 .proc-mem {
     font-size: 12px;
     color: $fg-dark;
-}
-
-// =========================
-// Close Hint
-// =========================
-
-.close-hint {
-    font-size: 10px;
-    color: rgba(86, 95, 137, 0.6);
-    margin-top: 12px;
 }

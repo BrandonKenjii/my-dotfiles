@@ -1,8 +1,10 @@
 #!/bin/bash
 # Spotify notification handler - called by dunst when a Spotify notification arrives
-# Downloads album art and re-sends the notification with the art attached
+# Downloads album art and re-sends the notification with the art attached.
+# Only notifies on actual song changes, not on every metadata update.
 
 CACHE_DIR="$HOME/.cache/dunst"
+CACHE_FILE="$CACHE_DIR/spotify_last_song"
 mkdir -p "$CACHE_DIR"
 
 get_album_art() {
@@ -30,6 +32,18 @@ artist=$(playerctl -p spotify metadata artist 2>/dev/null)
 title=$(playerctl -p spotify metadata title 2>/dev/null)
 album=$(playerctl -p spotify metadata album 2>/dev/null)
 
+# Only notify on actual song change, not playback progress updates
+current_song="${artist}|||${title}|||${album}"
+last_song=""
+[[ -f "$CACHE_FILE" ]] && last_song=$(cat "$CACHE_FILE")
+
+if [[ "$current_song" == "$last_song" ]]; then
+    exit 0
+fi
+
+# Record this song so we don't notify again for it
+echo "$current_song" > "$CACHE_FILE"
+
 # Build notification body
 body=""
 [[ -n "$artist" ]] && body+="by <b>$artist</b>"
@@ -41,7 +55,9 @@ icon_arg=""
 [[ -n "$art_file" ]] && icon_arg="-i $art_file"
 
 [[ -n "$title" ]] && {
-    dunstify -a "Spotify" \
+    # Use "spotify" (lowercase) as the app name so it doesn't re-trigger the
+    # [spotify] dunst rule that matches appname=Spotify (case-sensitive)
+    dunstify -a "spotify" \
         -u normal \
         -h string:x-dunst-stack-tag:spotify \
         $icon_arg \

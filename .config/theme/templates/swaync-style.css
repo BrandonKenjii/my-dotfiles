@@ -1,0 +1,255 @@
+/* SwayNC theme - Catppuccin Mocha, matches waybar
+   Built for swaync 0.12 structure: .notification-row > .notification-background > .notification */
+
+* {
+  font-family: "JetBrainsMono Nerd Font", "Font Awesome 6 Free";
+  font-size: 12px;
+}
+
+/* ============ Theme variables (override built-in) ============ */
+
+:root {
+  --cc-bg: rgba(@_DEC_BG@, 0.97);   /* base @BG@ */
+  --noti-border-color: @BG_SELECTED@;      /* surface1 */
+  --noti-bg: @_DEC_BG_SURFACE@;             /* surface0 @BG_HIGHLIGHT@ */
+  --noti-bg-alpha: 1.0;
+  --noti-bg-darker: @BG@;         /* base */
+  --noti-bg-hover: @BG_SELECTED@;          /* surface1 */
+  --noti-bg-focus: rgba(@_DEC_BG_SELECTED@, 0.5);
+  --noti-close-bg: rgba(255, 255, 255, 0.06);
+  --noti-close-bg-hover: rgba(@_DEC_RED@, 0.3);
+  --text-color: @FG@;
+  --text-color-disabled: @FG_DARK@;    /* overlay0 */
+  --bg-selected: @GREEN@;            /* green */
+  --border-radius: 14px;
+  --notification-shadow: 0 8px 24px rgba(0, 0, 0, 0.55), 0 2px 6px rgba(0, 0, 0, 0.35);
+  --font-size-body: 12px;
+  --font-size-summary: 13px;
+  --hover-transition: background 0.15s ease-in-out;
+}
+
+/* ============ Notification popups ============ */
+
+.notification-row .notification-background {
+  padding: 8px 12px;
+}
+
+.notification-row .notification-background .notification {
+  border-radius: 14px;
+  border: 1px solid @BG_SELECTED@;
+  filter: none;
+  opacity: 1;
+}
+
+.floating-notifications .notification {
+  box-shadow: var(--notification-shadow);
+}
+
+/* Urgency accents */
+.notification-row .notification-background .notification.low {
+  border-left: 3px solid @FG_DARK@;
+}
+
+.notification-row .notification-background .notification.normal {
+  border-left: 3px solid @GREEN@;
+}
+
+.notification-row .notification-background .notification.critical {
+  border-left: 3px solid @RED@;
+  box-shadow: 0 8px 24px rgba(@_DEC_RED@, 0.18), 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+/* App icon chip */
+.notification-row .notification-background .notification .notification-default-action .notification-content .image {
+  border-radius: 10px;
+  padding: 8px;
+  margin: 4px 8px 4px 4px;
+  background: @BG@;
+  border: 1px solid @BG_SELECTED@;
+}
+
+.notification-row .notification-background .notification .notification-default-action .notification-content .app-icon {
+  margin: 4px;
+}
+
+.notification .appname {
+  color: @GREEN@;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+/* Text */
+.notification-row .notification-background .notification .notification-default-action .notification-content .text-box .summary {
+  color: @FG@;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.notification-row .notification-background .notification .notification-default-action .notification-content .text-box .body {
+  color: #a6adc8;
+  font-size: 12px;
+}
+
+.notification-row .notification-background .notification .notification-default-action .notification-content .text-box .time {
+  color: @FG_DARK@;
+  font-size: 10px;
+  font-weight: normal;
+  margin-right: 30px;
+}
+
+/* Action buttons */
+.notification-row .notification-background .notification .notification-alt-actions {
+  background: @BG@;
+  padding: 4px;
+}
+
+.notification-row .notification-background .notification .notification-action > button {
+  border-radius: 999px;
+  color: @FG@;
+  background: @BG@;
+  border: 1px solid @BG_SELECTED@;
+  margin: 4px;
+  padding: 2px 14px;
+}
+
+.notification-row .notification-background .notification .notification-action > button:hover {
+  background: @BG_SELECTED@;
+  border-color: @GREEN@;
+}
+
+/* Progress bars */
+.notification-row .notification-background .notification .notification-default-action .notification-content progressbar trough {
+  background: @BG@;
+  min-height: 4px;
+  border-radius: 999px;
+}
+
+.notification-row .notification-background .notification .notification-default-action .notification-content progressbar progress {
+  background: @GREEN@;
+  border-radius: 999px;
+  min-height: 4px;
+}
+
+/* Close button */
+.close-button {
+  color: @FG_DARK@;
+}
+
+.close-button:hover {
+  color: @RED@;
+  background: var(--noti-close-bg-hover);
+}
+
+/* ============ Control center ============ */
+
+.control-center {
+  background: var(--cc-bg);
+  border: 1px solid @BG_HIGHLIGHT@;
+  border-radius: 18px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6);
+}
+
+/* Flat rows: no inner cards, content lives directly on the panel.
+   Must match/beat built-in specificity (.notification-row .notification-background .notification) */
+.control-center .notification-row .notification-background .notification {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  filter: none;
+  opacity: 1;
+}
+
+.control-center .notification-row .notification-background {
+  padding: 4px 14px;
+  border-bottom: 1px solid @BG_HIGHLIGHT@;
+}
+
+.control-center .notification-row:last-child .notification-background {
+  border-bottom: none;
+}
+
+.control-center .notification-row:hover .notification-background {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Keep urgency accents on the flat rows */
+.control-center .notification-row .notification-background .notification.low {
+  border-left: 3px solid @FG_DARK@;
+}
+
+.control-center .notification-row .notification-background .notification.normal {
+  border-left: 3px solid @GREEN@;
+}
+
+.control-center .notification-row .notification-background .notification.critical {
+  border-left: 3px solid @RED@;
+}
+
+/* Empty state */
+.control-center .control-center-list-placeholder label,
+.control-center .notification-list-placeholder label {
+  color: @FG_DARK@;
+  font-size: 12px;
+}
+
+/* ============ Widgets ============ */
+
+.widget-title {
+  color: @FG@;
+  margin: 16px 18px 10px 18px;
+}
+
+.widget-title > label {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.widget-title > button {
+  background: @BG_HIGHLIGHT@;
+  border: 1px solid @BG_SELECTED@;
+  border-radius: 999px;
+  color: @GREEN@;
+  padding: 4px 12px;
+  font-size: 11px;
+}
+
+.widget-title > button:hover {
+  background: @BG_SELECTED@;
+}
+
+.widget-dnd {
+  color: @FG@;
+  margin: 0 18px 8px 18px;
+}
+
+.widget-dnd switch {
+  background: @BG_HIGHLIGHT@;
+  border: 1px solid @BG_SELECTED@;
+  border-radius: 999px;
+  padding: 2px;
+}
+
+.widget-dnd switch:checked {
+  background: @GREEN@;
+}
+
+.widget-dnd switch slider {
+  background: @FG@;
+  border-radius: 50%;
+  min-width: 16px;
+  min-height: 16px;
+}
+
+.widget-dnd switch:checked slider {
+  background: @BG@;
+}
+
+.widget-label {
+  margin: 8px 18px;
+  color: @FG_DARK@;
+}
+
+.widget-label > label {
+  font-size: 11px;
+}

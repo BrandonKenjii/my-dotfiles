@@ -25,10 +25,13 @@
         "backlight",
         "pulseaudio",
         "network",
+        "custom/fortivpn",
+        "custom/docker",
         "custom/separator",
         "battery",
         "clock",
-        "tray"
+        "tray",
+        "custom/notification"
     ],
 
     // Workspaces
@@ -85,11 +88,11 @@
             "weeks-pos": "right",
             "on-scroll": 1,
             "format": {
-                "months": "<span color='#7aa2f7'><b>{}</b></span>",
-                "days": "<span color='#c0caf5'>{}</span>",
-                "weeks": "<span color='#9ece6a'>W{}</span>",
-                "weekdays": "<span color='#ff9e64'>{}</span>",
-                "today": "<span color='#f7768e'><b><u>{}</u></b></span>"
+                "months": "<span color='#89b4fa'><b>{}</b></span>",
+                "days": "<span color='#cdd6f4'>{}</span>",
+                "weeks": "<span color='#a6e3a1'>W{}</span>",
+                "weekdays": "<span color='#fab387'>{}</span>",
+                "today": "<span color='#f38ba8'><b><u>{}</u></b></span>"
             }
         },
         "actions": {
@@ -295,6 +298,27 @@
         "tooltip": true
     },
 
+    // FortiClient VPN status
+    "custom/fortivpn": {
+        "format": "{}",
+        "return-type": "json",
+        "exec": "~/.config/waybar/scripts/fortivpn.sh",
+        "interval": 10,
+        "on-click": "~/.config/waybar/scripts/fortivpn.sh toggle",
+        "tooltip": true
+    },
+
+    // Docker status
+    "custom/docker": {
+        "format": "{}",
+        "return-type": "json",
+        "exec": "~/.config/waybar/scripts/docker.sh",
+        "interval": 30,
+        "on-click": "~/.config/waybar/scripts/docker.sh toggle",
+        "on-click-right": "kitty --class floating -e docker ps -a",
+        "tooltip": true
+    },
+
     // Idle inhibitor (DND)
     "idle_inhibitor": {
         "format": "{icon}",
@@ -304,5 +328,29 @@
         },
         "tooltip-format-activated": "Idle inhibitor: ON",
         "tooltip-format-deactivated": "Idle inhibitor: OFF"
+    },
+
+    // Notification center (swaync)
+    "custom/notification": {
+        "tooltip": false,
+        "format": "{icon}",
+        "format-icons": {
+            // JetBrainsMono Nerd Font v3 bells (md-bell*) so metrics match the rest of the bar
+            "notification": "<span foreground='#f38ba8'>󰏱</span>",
+            "none": "󰏳",
+            "dnd-notification": "<span foreground='#f9e2af'>󰏲</span>",
+            "dnd-none": "󰯨",
+            "inhibited-notification": "<span foreground='#f38ba8'>󰏱</span>",
+            "inhibited-none": "󰏳",
+            "dnd-inhibited-notification": "<span foreground='#f9e2af'>󰏲</span>",
+            "dnd-inhibited-none": "󰯨"
+        },
+        "return-type": "json",
+        "exec-if": "which swaync-client",
+        "exec": "swaync-client -swb",
+        "on-click": "swaync-client -t -sw",
+        "on-click-right": "swaync-client -d -sw",
+        "on-click-middle": "swaync-client -C -sw",
+        "escape": true
     }
 }
