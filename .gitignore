@@ -20,6 +20,10 @@
 # Markdown files
 !*.md
 
+# README screenshots
+!screenshots
+!screenshots/*
+
 # --- .config directory ---
 !.config
 
