@@ -1,0 +1,8 @@
+-- Monitor Configuration
+-- eDP-1: 2880x1620 @ 120Hz — scale 1.5 for ~1920x1080 effective res
+hl.monitor({
+    output   = "eDP-1",
+    mode     = "2880x1620@120",
+    position = "0x0",
+    scale    = 1.5,
+})
